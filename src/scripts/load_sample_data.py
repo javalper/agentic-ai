@@ -17,6 +17,13 @@ def load_sample_data():
     db_manager = DatabaseManager()
     
     with db_manager.get_session() as session:
+        existing_count = session.query(Subscriber).count()
+        if existing_count > 0:
+            print(f"Uyarı: Veritabanında zaten {existing_count} abone var.")
+            print("Mevcut veriyi korumak için yükleme iptal ediliyor.")
+            print("Veritabanını sıfırlamak için: python -m src.scripts.init_db --reset")
+            return
+        
         subscribers_data = [
             {
                 'subscriber_number': 'SUB001',
