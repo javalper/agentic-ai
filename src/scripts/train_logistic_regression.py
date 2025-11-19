@@ -21,7 +21,9 @@ def load_training_data(session: Session):
     ).all()
     
     if not actions:
-        print("No training data available. Please run the system first to collect data.")
+        print("No training data available.")
+        print("Please run: python -m src.scripts.simulate_outcomes")
+        print("This will generate outcome data for the collection actions.")
         return None, None
     
     print(f"Found {len(actions)} collection actions with outcomes")
@@ -183,7 +185,9 @@ def main():
     
     print("Initializing database connection...")
     db_manager = DatabaseManager()
-    session = db_manager.get_session()
+    print(f"Database URL: {db_manager.engine.url}")
+    
+    session = db_manager.get_session_direct()
     
     try:
         model = train_model(
